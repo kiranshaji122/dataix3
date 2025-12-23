@@ -6,6 +6,7 @@ function Login({ setRole }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -14,71 +15,43 @@ function Login({ setRole }) {
       return;
     }
 
-    for (let role in dummyUsers) {
-      const user = dummyUsers[role];
-      if (user.username === username && user.password === password) {
-        setRole(role);
-        navigate(`/${role}`);
-        return;
-      }
+    // STUDENT LOGIN
+  
+      const student = dummyUsers.students.find(u => u.username === username && u.password === password);
+    if (student) {
+      setRole("student");
+      navigate("/student", { state: { student } });
+      return;
+    }
+
+    // TRAINER LOGIN
+       const trainer = dummyUsers.trainer.find(u => u.username === username && u.password === password);
+    if (trainer) {
+      setRole("trainer");
+      navigate("/trainer", { state: { trainer } });
+      return;
+    }
+
+    // ADMIN LOGIN
+    if (
+      username === dummyUsers.admin.username &&
+      password === dummyUsers.admin.password
+    ) {
+      setRole("admin");
+      navigate("/admin");
+      return;
     }
 
     setError("Invalid username or password");
   };
 
-  // ✅ Style object defined inside the same file
-  const styles = {
-    container: {
-      maxWidth: "400px",
-      margin: "80px auto",
-      padding: "30px",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      backgroundColor: "#f9f9f9",
-      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      textAlign: "center",
-    },
-    heading: {
-      marginBottom: "20px",
-      color: "#333",
-    },
-    input: {
-      width: "100%",
-      padding: "10px",
-      margin: "8px 0",
-      border: "1px solid #ccc",
-      borderRadius: "6px",
-      fontSize: "14px",
-    },
-    button: {
-      width: "100%",
-      padding: "12px",
-      marginTop: "15px",
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      borderRadius: "6px",
-      fontSize: "16px",
-      cursor: "pointer",
-    },
-    buttonHover: {
-      backgroundColor: "#0056b3",
-    },
-    error: {
-      color: "red",
-      marginTop: "10px",
-      fontSize: "14px",
-    },
-  };
-
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}> Login</h2>
+      <h2>Login</h2>
 
       <input
         style={styles.input}
         placeholder="Username"
-        value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
 
@@ -86,7 +59,6 @@ function Login({ setRole }) {
         style={styles.input}
         type="password"
         placeholder="Password"
-        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
@@ -98,5 +70,34 @@ function Login({ setRole }) {
     </div>
   );
 }
+
+const styles = {
+  container: {
+    maxWidth: "400px",
+    margin: "80px auto",
+    padding: "30px",
+    textAlign: "center",
+    borderRadius: "8px",
+    background: "#f4f4f4",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    margin: "8px 0",
+  },
+  button: {
+    width: "100%",
+    padding: "12px",
+    background: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+  },
+  error: {
+    color: "red",
+    marginTop: "10px",
+  },
+};
 
 export default Login;

@@ -12,41 +12,26 @@ function App() {
 
   return (
     <Router>
-      {role && (
-        <button onClick={() => setRole(null)} style={{ margin: 10 }}>
-          Logout
-        </button>
-      )}
-
       <Routes>
         <Route path="/" element={<Login setRole={setRole} />} />
 
-        <Route
-          path="/student"
-          element={
-            <PrivateRoute role={role} allowedRole="student">
-              <Student />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/student" element={
+          <PrivateRoute role={role} allowedRole="student">
+            <Student setRole={setRole} />
+          </PrivateRoute>
+        } />
 
-        <Route
-          path="/trainer"
-          element={
-            <PrivateRoute role={role} allowedRole="trainer">
-              <Trainer />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/trainer" element={
+          <PrivateRoute role={role} allowedRole="trainer">
+            <Trainer setRole={setRole} />
+          </PrivateRoute>
+        } />
 
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute role={role} allowedRole="admin">
-              <Admin />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/admin" element={
+          <PrivateRoute role={role} allowedRole="admin">
+            <Admin setRole={setRole} />
+          </PrivateRoute>
+        } />
       </Routes>
     </Router>
   );
